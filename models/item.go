@@ -47,3 +47,16 @@ type CartData struct {
 	CVV            string    `json:"cvv"`
 	PurchasedOn    time.Time `json:"purchased_on"`
 }
+
+type RegisterData struct{
+    FullName        string      `json:"full_name"`
+    EmailID         string      `json:"email_id"`
+    Password        string      `json:"password"`
+}
+
+type CreateProfile struct{
+    FullName        string      `json:"full_name"`
+    EmailID         string      `json:"email_id"`
+    Password        string      `json:"password"`
+    CreatedOn       time.Time   `json:"created_on"`
+}

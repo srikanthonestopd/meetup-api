@@ -120,7 +120,6 @@ func AddToCartData(w http.ResponseWriter, r *http.Request) {
 		log.Println("❌ JSON Decode Error:", err)
 		return
 	}
-
 	// Print inserting data
 	fmt.Printf("🔹 Inserting item with ID: %s\n", cartData.EventId)
 	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
@@ -137,5 +136,63 @@ func AddToCartData(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Data inserted successfully",
 		"id":      cartData.PhoneNumber,
+	})
+}
+
+
+func RegisterData(w http.ResponseWriter, r *http.Request) {
+	var registerData models.RegisterData
+	err := json.NewDecoder(r.Body).Decode(&registerData)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with EmailID: %s\n", registerData.EmailID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(registerData.EmailID, registerData, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data inserted successfully",
+		"id":      registerData.EmailID,
+	})
+}
+
+
+func CreateProfile(w http.ResponseWriter, r *http.Request) {
+	var createProfile models.CreateProfile
+		fmt.Println("🔹 Inserting item with EmailID:")
+
+	err := json.NewDecoder(r.Body).Decode(&createProfile)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with EmailID: %s\n", createProfile.EmailID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(createProfile.EmailID, createProfile, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data inserted successfully",
+		"id":      createProfile.EmailID,
 	})
 }
