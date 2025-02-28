@@ -9,6 +9,11 @@ type Item struct {
 	Price int    `json:"price"`
 }
 
+type Login struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type Payment struct {
 	Username       string  `json:"username"`
 	UserEmailID    string  `json:"user_emailid"`
@@ -48,15 +53,47 @@ type CartData struct {
 	PurchasedOn    time.Time `json:"purchased_on"`
 }
 
-type RegisterData struct{
-    FullName        string      `json:"full_name"`
-    EmailID         string      `json:"email_id"`
-    Password        string      `json:"password"`
+type RegisterData struct {
+	FullName string `json:"full_name"`
+	EmailID  string `json:"email_id"`
+	Password string `json:"password"`
 }
 
-type CreateProfile struct{
-    FullName        string      `json:"full_name"`
-    EmailID         string      `json:"email_id"`
-    Password        string      `json:"password"`
-    CreatedOn       time.Time   `json:"created_on"`
+type CreateProfile struct {
+	FullName  string    `json:"full_name"`
+	EmailID   string    `json:"email_id"`
+	Password  string    `json:"password"`
+	CreatedOn time.Time `json:"created_on"`
+}
+
+type CreateEvent struct {
+	ID             string    `json:"id"`
+	Name           string    `json:"name"`
+	Description    string    `json:"description"`
+	Organizer      string    `json:"organizer"`
+	Phone          string    `json:"phone"`
+	Location       string    `json:"location"`
+	Address        string    `json:"address"`
+	City           string    `json:"city"`
+	State          string    `json:"state"`
+	Country        string    `json:"country"`
+	ZipCode        string    `json:"zip_code"`
+	Date           string    `json:"date"`
+	Time           string    `json:"time"`
+	Capacity       int       `json:"capacity"`
+	AvailableSeats int       `json:"available_seats"`
+	Price          float64   `json:"price"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+type Checkout struct {
+	EventID     string  `json:"event_id"`
+	EventName   string  `json:"event_name"`
+	Description string  `json:"description"`
+	Quantity    int     `json:"quantity"`
+	Subtotal    float64 `json:"subtotal"`
+	Tax         float64 `json:"tax"`
+	ServiceFee  float64 `json:"service_fee"`
+	TotalAmount float64 `json:"total_amount"`
 }
