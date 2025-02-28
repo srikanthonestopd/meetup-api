@@ -8,6 +8,8 @@ import (
 func RegisterItemRoutes(router *mux.Router) {
 	router.HandleFunc("/api/payment/checkout", handlers.PaymentsData).Methods("POST")
 	router.HandleFunc("/api/auth/register", handlers.RegisterData).Methods("POST")
+	router.HandleFunc("/api/notifications/send", handlers.NotificationsData).Methods("POST")
+	router.HandleFunc("/api/invite-friends", handlers.InviteData).Methods("POST")
 	router.HandleFunc("/api/tickets/verify/{barcode}", handlers.BarcodeData).Methods("POST")
 	router.HandleFunc("/api/auth/createProfile", handlers.CreateProfile).Methods("POST")
 	router.HandleFunc("/api/cart/add", handlers.AddtocartData).Methods("POST")

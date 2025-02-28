@@ -69,3 +69,19 @@ type BarcodeData struct {
 	UserID    string `json:"user_id"`
 	UserName  string `json:"user_name"`
 }
+type NotificationsData struct{
+    UserID              string          `json:"user_id"`
+    UserName            string          `json:"user_name"`
+    MessageType         string          `json:"message_type"`
+    EmailId             string          `json:"email_id"`
+    Subject             string          `json:"subject"`
+    Message             string          `json:"message"`
+}
+type InviteData struct{
+    UserName            string           `json:"User_name"`
+    EventId             string           `json:"event_id"`
+    EventName           string           `json:"event_name"`
+    Message             string           `json:"message"`
+    MessageType         string           `json:"message_type"`
+    EmailId             string           `json:"email_id"`
+}
