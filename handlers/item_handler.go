@@ -112,7 +112,7 @@ func PaymentsData(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func AddToCartData(w http.ResponseWriter, r *http.Request) {
+func AddtocartData(w http.ResponseWriter, r *http.Request) {
 	var cartData models.CartData
 	err := json.NewDecoder(r.Body).Decode(&cartData)
 	if err != nil {
@@ -195,4 +195,91 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 		"message": "Data inserted successfully",
 		"id":      createProfile.EmailID,
 	})
+}
+
+// Insert data into Couchbase with auto-incrementing ID
+func BarcodeData(w http.ResponseWriter, r *http.Request) {
+	var barcode models.BarcodeData
+	err := json.NewDecoder(r.Body).Decode(&barcode)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+
+	// Print inserting data
+	fmt.Printf("🔹 Inserting barcode with Event ID: %s\n", barcode.EventId)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(barcode.EventId, barcode, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data inserted successfully",
+		"id":      barcode.EventId,
+	})
+}
+
+// Insert data into Couchbase with auto-incrementing ID
+func NotificationsData(w http.ResponseWriter, r *http.Request) {
+	var notifications models.NotificationsData
+	err := json.NewDecoder(r.Body).Decode(&notifications)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+
+	// Print inserting data
+	fmt.Printf("🔹 Inserting notifications with Email ID: %s\n", notifications.EmailId)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(notifications.EmailId, notifications, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data inserted successfully",
+		"id":      notifications.EmailId,
+	})
+}
+
+// Insert data into Couchbase with auto-incrementing ID
+func InviteData(w http.ResponseWriter, r *http.Request) {
+	var invite models.InviteData
+	err := json.NewDecoder(r.Body).Decode(&invite)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+
+	// Print inserting data
+	fmt.Printf("🔹 Inserting invite data with Email ID: %s\n", invite.EmailId)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(invite.EmailId, invite, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data inserted successfully",
+
+    })
 }
