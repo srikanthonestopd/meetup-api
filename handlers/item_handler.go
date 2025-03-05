@@ -209,6 +209,35 @@ func RegisterData(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func ForgotPassword(w http.ResponseWriter, r *http.Request) {
+	var forgotPassword models.ForgotPassword
+	fmt.Println("🔹 Inserting item with EmailID:")
+
+	err := json.NewDecoder(r.Body).Decode(&forgotPassword)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with EmailID: %s\n", forgotPassword.Email)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(forgotPassword.Email, forgotPassword, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "New Password Created successfully",
+		"id":      forgotPassword.Email,
+	})
+}
+
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	var createProfile models.CreateProfile
 	fmt.Println("🔹 Inserting item with EmailID:")
@@ -293,5 +322,150 @@ func Checkout(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Checkout successful. Proceed to payment to complete your order.",
 		"id":      checkout.EventID,
+	})
+}
+
+func RefundData(w http.ResponseWriter, r *http.Request) {
+	var refundData models.RefundData
+	fmt.Println("🔹 Inserting item with UserID:")
+
+	err := json.NewDecoder(r.Body).Decode(&refundData)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with UserID: %s\n", refundData.UserID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(refundData.UserID, refundData, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Refund Successful",
+		"id":      refundData.UserID,
+	})
+}
+
+func TicketCancellation(w http.ResponseWriter, r *http.Request) {
+	var ticketCancellation models.CancelTicketRequest
+	fmt.Println("🔹 Inserting item with UserID:")
+
+	err := json.NewDecoder(r.Body).Decode(&ticketCancellation)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with UserID: %s\n", ticketCancellation.UserID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(ticketCancellation.UserID, ticketCancellation, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Ticket Booking Cancelled",
+		"id":      ticketCancellation.UserID,
+	})
+}
+
+func ReviewsData(w http.ResponseWriter, r *http.Request) {
+	var reviewData models.ReviewData
+	fmt.Println("🔹 Inserting item with UserID:")
+
+	err := json.NewDecoder(r.Body).Decode(&reviewData)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with UserID: %s\n", reviewData.UserID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(reviewData.UserID, reviewData, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Thank you for your valuable feedback",
+		"id":      reviewData.UserID,
+	})
+}
+
+func ShareEvent(w http.ResponseWriter, r *http.Request) {
+	var shareEvent models.ShareEvent
+	fmt.Println("🔹 Inserting item with UserID:")
+
+	err := json.NewDecoder(r.Body).Decode(&shareEvent)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with UserID: %s\n", shareEvent.UserID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(shareEvent.UserID, shareEvent, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Event Shared Successfully",
+		"id":      shareEvent.UserID,
+	})
+}
+
+func TrackClickData(w http.ResponseWriter, r *http.Request) {
+	var clickData models.TrackClickData
+	fmt.Println("🔹 Inserting item with UserID:")
+
+	err := json.NewDecoder(r.Body).Decode(&clickData)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		log.Println("❌ JSON Decode Error:", err)
+		return
+	}
+	// Print inserting data
+	fmt.Printf("🔹 Inserting item with UserID: %s\n", clickData.UserID)
+	meetupCollection := config.Cluster.Bucket("roh-api").Scope("myscope").Collection("meetup")
+
+	// Insert into Couchbase
+	_, err = meetupCollection.Insert(clickData.UserID, clickData, nil)
+	if err != nil {
+		http.Error(w, "Failed to insert data", http.StatusInternalServerError)
+		log.Println("❌ Couchbase Insert Error:", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Data Inserted Successfully",
+		"id":      clickData.UserID,
 	})
 }
