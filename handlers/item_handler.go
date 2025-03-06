@@ -83,6 +83,31 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(item)
 }
 
+// Get data from Couchbase by ID
+func GetAddtocartData(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+
+	// Fetch document from Couchbase
+	result, err := config.Collection.Get(id, nil)
+	if err != nil {
+		http.Error(w, "Data not found", http.StatusNotFound)
+		return
+	}
+
+	var item models.Item
+	err = result.Content(&item)
+	if err != nil {
+		http.Error(w, "Failed to parse data", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(item)
+}
+
+
+
 // Insert data into Couchbase with auto-incrementing ID
 func PaymentsData(w http.ResponseWriter, r *http.Request) {
 	var payment models.Payment
